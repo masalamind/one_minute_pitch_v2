@@ -4,6 +4,7 @@ from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, BooleanField
 from wtforms.validators import InputRequired, Email, Length
 from flask_sqlalchemy import SQLAlchemy
+from werkzeug.security import generate_password_hash, check_password_hash
 
 app = Flask(__name__)
 Bootstrap(app)
@@ -12,7 +13,7 @@ db = SQLAlchemy(app)
   
 
 app.config['SECRET_KEY'] = 'my secret string' # place in config later
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+# app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///db.sqlite3'
 
 
@@ -59,7 +60,8 @@ def login():
 def signup():
   form = RegisterForm()
   if form.validate_on_submit():
-    new_user=User(username=form.username.data, email=form.email.data, password=form.password.data ) 
+    hashed_password = generate_password_hash(form.password.data, method="sha256")
+    new_user=User(username=form.username.data, email=form.email.data, password=hashed_password) 
     db.session.add(new_user)
     db.session.commit()
     return '<h1>New user has been added.</h1>'
