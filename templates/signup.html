@@ -1,3 +1,17 @@
+{% extends "bootstrap/base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+
+{% block title %}
+Login
+{% endblock %}
+
+{% block styles %}
+{{super()}}
+<link rel="stylesheet" href="{{url_for('.static',filename="styles.css")}}">
+{% endblock %}
+
+{% block content %}
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -33,16 +47,20 @@
       <div class="access-form">
         <div class="main-form-label"><div class="blue-text">Sign Up</div></div>
         <div class="form-content">        
-          <form action="">
-            <input class="login-info" type="text" placeholder="                                                     Choose username"><br><br>
+          <form action="/signup" method="POST">
+            {{ form.hidden_tag() }}
+            {{ wtf.form_field(form.username) }}
+            {{ wtf.form_field(form.email) }}
+            {{ wtf.form_field(form.password) }}
+            <!--<input class="login-info" type="text" placeholder="                                                     Choose username"><br><br>
             <input class="login-info" type="text" placeholder="                                                     Enter email"><br><br>
             <input class="login-info" type="password" name="email" id="email" placeholder="                                                    Type password"><br><br>
             <input class="login-info" type="password" name="email" id="email" placeholder="                                                     Confirm password"><br><br>
+            -->
           
-          </form>
         
-          <button class="form-btn"><i class="fa-solid fa-user-plus"></i> Sign up</button>
-
+          <button class="form-btn" type="submit"><i class="fa-solid fa-user-plus"></i> Sign up</button>
+          </form>
           <p><a class="form-extra" href="">Forgot  password?</a> <a class="form-extra" href="">Already have an account? <strong>LOGIN</strong></a></p>
 
         </div><!-- .form-content-->
@@ -61,3 +79,5 @@
 
   </body>
 </html>
+
+{% endblock %}

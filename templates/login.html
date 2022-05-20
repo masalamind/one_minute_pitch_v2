@@ -1,3 +1,16 @@
+{% extends "bootstrap/base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+
+{% block title %}
+Login
+{% endblock %}
+
+{% block styles %}
+{{super()}}
+<link rel="stylesheet" href="{{url_for('.static',filename="styles.css")}}">
+{% endblock %}
+
+{% block content %}
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -29,16 +42,22 @@
 
       <div class="access-form">
         <div class="main-form-label"><div class="blue-text">Log in</div></div>
+      
         <div class="form-content">                
-          <form action="">
-            <input class="login-info" type="text" placeholder="                                                       username/email"><br><br>
+          <form method="POST" action="/login" >
+            {{ form.hidden_tag() }}
+            {{ wtf.form_field(form.username) }}
+            {{ wtf.form_field(form.password) }}
+            {{ wtf.form_field(form.remember) }}
+
+            <!-- <input class="login-info" type="text" placeholder="                                                       username/email"><br><br>
             <input class="login-info" type="password" name="email" id="email" placeholder="                                                    myaddress@example.com"><br>
+            -->
           
+            <br>
+
+            <button class="form-btn" type="submit"><i class="fa-solid fa-right-to-bracket"></i> Login</button>
           </form>
-
-          <br>
-
-          <button class="form-btn"><i class="fa-solid fa-right-to-bracket"></i> Login</button>
 
           <p><a class="form-extra" href="">Forgot  password?</a> <a class="form-extra" href="">New User? <strong>SIGNUP</strong></a></p>
           
@@ -56,3 +75,5 @@
     
   </body>
 </html>
+
+{% endblock %}
