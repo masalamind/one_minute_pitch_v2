@@ -73,8 +73,8 @@ class RegisterForm(FlaskForm):
 
 
 class NewPitch(FlaskForm):
-  category = RadioField('Category',tags=['product','elevator','interview','promotion','icebreakers','pickuplines'],validators=[InputRequired()])
-  pitch_content = TextAreaField(u'pitch goes here' validators=[InputRequired(), Length(max=200)])
+  category = RadioField('Category',choices=['product','elevator','interview','promotion','icebreakers','pickuplines'],validators=[InputRequired()])
+  pitch_content = TextAreaField(u'pitch goes here', validators=[InputRequired(), Length(max=200)])
   
   
   
@@ -91,7 +91,7 @@ def login():
     user = User.query.filter_by(username=form.username.data).first()
     if user:
       if check_password_hash(user.password, form.password.data):
-        login_user(user,remember=form.remember.data)# you have to include this line to login the user otherwise they won't be logged in, this is from login manager dependencies
+        login_user(user,remember=form.remember.data) # you have to include this line to login the user otherwise they won't be logged in, this is from login manager dependencies
         return redirect(url_for("pitches"))
     # return '<h1>' + form.username.data + ' ' + form.password.data + '</h1>'
     return '<h1>Invalid username or password</h1>'
@@ -105,19 +105,20 @@ def signup():
     new_user=User(username=form.username.data, email=form.email.data, password=hashed_password) 
     db.session.add(new_user)
     db.session.commit()
-    return '<h1>New user has been added.</h1>'
+    # return '<h1>New user has been added.</h1>'
     # return '<h1>' + form.username.data + ' ' + form.email.data + form.password.data + '</h1>'
-  return render_template('signup.html', form=form)
+    return redirect(url_for("login"))
+    # return render_template('signup.html', form=form)
 
 @app.route('/pitch', methods=["GET", "POST"])
 def new_pitch():
   form = NewPitch()
-  if form.validate_on_submit():
+  if form.validate_on_submit():    
     my_pitch = Pitch(content=form.pitch_content.data, user_id='1', category_id=form.category.data)
     db.session.add(my_pitch)
     db.session.commit()
-    return '<h1>New pitch has been submitted</h1>'
-  return render_template('new_pitch.html')
+    return render_template('new_pitch.html',form=form)
+  # return '<h1>New pitch has been submitted</h1>'
 
 @app.route('/pitches')
 @login_required

@@ -1,3 +1,17 @@
+{% extends "bootstrap/base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+
+{% block title %}
+New Pitch
+{% endblock %}
+
+{% block styles %}
+{{super()}}
+<link rel="stylesheet" href="{{url_for('.static',filename="styles.css")}}">
+{% endblock %}
+
+{% block content %}
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -49,14 +63,14 @@
         <form action="#" method="POST">
           <h4>Select a Category</h4>
 
-          {% if form.title.errors %}
+          {% if form.category.errors %}
           <ul class="errors">
-              {% for error in form.title.errors %}
+              {% for error in form.category.errors %}
                   <li>{{ error }}</li>
               {% endfor %}
           </ul>
           {% endif %}
-          {% comment %} <ul class="list-three">
+          <!--<ul class="list-three">
             <li><input type="radio" name="pitch-tag" value="1" class="tag-radio-btn" id="product-pitches"/><label for="product-pitches">PRODUCT</label></li>
             <li><input type="radio" name="pitch-tag" value="2" class="tag-radio-btn" id="elevator-pitches"/><label for="elevator-pitches">ELEVATOR</label></li>
             <li><input type="radio" name="pitch-tag" value="3" class="tag-radio-btn" id="interview-pitches"/><label for="interview-pitches">INTERVIEW</label></li>
@@ -68,9 +82,9 @@
             <li><input type="radio" name="pitch-tag" value="6" class="tag-radio-btn" id="pickup-lines"/><label for="pickup-lines">ELEVATOR</label></li>
             <li><input type="radio" name="pitch-tag" value="4" class="tag-radio-btn" id="promotion"/><label for="promotion">INTERVIEW</label></li>
           
-          </ul> {% endcomment %}
+          </ul> -->
           <p>{{ form.category.label }}
-            {{ form.category.tags() }}
+            {{ form.category() }}
           </p>
 
           {% if form.category.errors %}
@@ -86,7 +100,7 @@
 
           <br>
           <p> {{form.pitch_content(rows=10, cols=50)}}</p>
-          {% comment %} <textarea cols="60" rows="7" id="new-pitch-input" name="pitch-content"> type pitch here ... </textarea> {% endcomment %}
+          <!-- <textarea cols="60" rows="7" id="new-pitch-input" name="pitch-content"> type pitch here ... </textarea> -->
           
           <br><br>
 
@@ -95,17 +109,6 @@
       </form>
       </div><!-- main-content -->
       
-
-
-
-
-
-
-
-
-
-
-
 
       
     </div> <!-- .main-container -->
@@ -118,3 +121,5 @@
     
   </body>
 </html>
+
+{% endblock %}
