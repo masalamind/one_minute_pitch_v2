@@ -28,7 +28,8 @@ class User(UserMixin, db.Model):
   username = db.Column(db.String(15), unique=True)
   email = db.Column(db.String(50), unique=True)
   password = db.Column(db.String(80))
-  pitches = db.relationship('Pitch',backref="user")
+  pitches = db.relationship('Pitch', backref="user")
+  comments = db.relationship('Comment', backref="user")
   
   
 class Category(db.Model):
@@ -39,15 +40,17 @@ class Category(db.Model):
 class Pitch (db.Model):
   pitch_id = db.Column(db.Integer, primary_key=True)
   publish_date = db.Column(db.)
+  comments= db.relationship('Comment', backref="pitch")
   user_id = db.Column(db.Integer, db.ForeignKey('user.id'))  
   category_id = db.Column(db.Integer, db.ForeignKey('category.id'))
   
 class Comment(db.Model):
   comment_id = db.Column(db.Integer, primary_key=True)
   content = db.Column(db.String(144))
-  pitch_id = db.Column(db.Integer)
-  user_id = db.Column(db.Integer)
   publish_date
+  pitch_id = db.Column(db.Integer, db.ForeignKey('pitch.pitch_id'))
+  user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+
 
 @login_manager.user_loader
 def load_user(user_id):
