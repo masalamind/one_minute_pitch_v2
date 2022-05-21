@@ -15,8 +15,9 @@
       <header>
         <div class="top-nav">
           <ul>
-            <li><a href="login.html">Log In</a></li> |
-            <li><a href="signup.html">Sign Up</a></li>
+            <li><a href="{{ url_for('login') }}">Log In</a></li> |
+            <li><a href="{{ url_for('signup') }}">Sign Up</a></li> |
+            <li><a href="{{ url_for('logout') }}">Log out</a></li>
 
           </ul>
 
@@ -28,7 +29,7 @@
               <li class="navigate active-link"><a href="">PITCHES</a></li>
               <li class="navigate"><a href="bookmarked.html">BOOKMARKS</a></li>
               <li class="navigate"><a href="user_profile.html">PROFILE</a></li>
-              <li><button class="cta-btn"><i class="fa-solid fa-circle-plus"></i> NEW PITCH</button></li>
+              <li><a href="{{url_for('new_pitch')}}"><button class="cta-btn"><i class="fa-solid fa-circle-plus"></i> NEW PITCH</button></a></li>
               
             </ul>
 
