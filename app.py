@@ -1,6 +1,6 @@
 from email import contentmanager
 from sre_constants import CATEGORY_UNI_DIGIT
-from flask import Flask, render_template, redirect, url_for
+from flask import Flask, render_template, redirect, url_for, request
 from flask_bootstrap import Bootstrap
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, BooleanField
@@ -20,7 +20,7 @@ login_manager.login_view = 'login'
 
 app.config['SECRET_KEY'] = 'my secret string' # place in config later
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///db.sqlite3'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///db.pitchy'
 
  
 class User(UserMixin, db.Model):
@@ -103,6 +103,13 @@ def signup():
 @app.route('/pitches')
 @login_required
 def pitches():
+  if request.method == "POST":
+    pitch_category = request.form['pitch-tag']
+    pitch_content = request.form['pitch-content']
+    
+    
+    
+
   return render_template('index.html')
 
 @app.route('/profile')
@@ -115,7 +122,7 @@ def logout():
   logout_user()
   return redirect(url_for('index'))
 
-@app.route('/pitch')
+@app.route('/pitch', methods=["GET", "POST"])
 def new_pitch():
   return render_template('new_pitch.html')
 

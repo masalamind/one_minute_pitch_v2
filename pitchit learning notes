@@ -1,0 +1,33 @@
+NOTES
+
+from app import Category, Pitch
+
+// Categories created first
+
+1 product_pitch = Category(category_id='1',category_name='product')
+2 elevator_pitch = Category(category_id='2',category_name='elevator')
+3 interview_pitch = Category(category_id='3',category_name='interview')
+4 promotion_pitch = Category(category_id='4',category_name='promotion')
+5 icebreakers_pitch = Category(category_id='5',category_name='icebreakers')
+6 pickuplines_pitch = Category(category_id='6',category_name='pickuplines')
+
+db.session.add_all([product_pitch,elevator_pitch,interview_pitch,promotion_pitch,icebreakers_pitch,pickuplines_pitch])
+
+db.session.commit()
+
+// Creating a pitch
+
+// this is where the backref works you can use the key to refer to the kind of pitch that has already been created
+
+mypitch = Pitch(content="Yoda only one for me", user_id='1', category_id='6')
+db.session.add(mypitch)
+db.session.commit()
+
+// below is where the backref name is applied
+mypitch.category.id
+// WHOAH you can even access everything in that table now
+mypitch.category.category_name  // returns pickuplines
+
+// Check Population
+sqlite3 db.pitchy
+.tables
