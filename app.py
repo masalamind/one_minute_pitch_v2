@@ -5,6 +5,7 @@ from wtforms import StringField, PasswordField, BooleanField
 from wtforms.validators import InputRequired, Email, Length
 from flask_sqlalchemy import SQLAlchemy
 from werkzeug.security import generate_password_hash, check_password_hash
+from flask_login import LoginManager, UserMixin, login_user, login_required, logtout_user, current_user
 
 app = Flask(__name__)
 Bootstrap(app)
@@ -50,7 +51,7 @@ def login():
   if form.validate_on_submit():
     user = User.query.filter_by(username=form.username.data).first()
     if user:
-      if user.password == form.password.data:
+      if check_password_hash(user.password, form.password.data):
         return redirect(url_for("pitches"))
     # return '<h1>' + form.username.data + ' ' + form.password.data + '</h1>'
     return '<h1>Invalid username or password</h1>'
