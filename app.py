@@ -109,6 +109,16 @@ def signup():
     # return '<h1>' + form.username.data + ' ' + form.email.data + form.password.data + '</h1>'
   return render_template('signup.html', form=form)
 
+@app.route('/pitch', methods=["GET", "POST"])
+def new_pitch():
+  form = NewPitch()
+  if form.validate_on_submit():
+    my_pitch = Pitch(content=form.pitch_content.data, user_id='1', category_id=form.category.data)
+    db.session.add(my_pitch)
+    db.session.commit()
+    return '<h1>New pitch has been submitted</h1>'
+  return render_template('new_pitch.html')
+
 @app.route('/pitches')
 @login_required
 def pitches():
@@ -134,9 +144,7 @@ def logout():
   logout_user()
   return redirect(url_for('index'))
 
-@app.route('/pitch', methods=["GET", "POST"])
-def new_pitch():
-  return render_template('new_pitch.html')
+
 
 if __name__== '__main__':
   app.run(debug=True)
