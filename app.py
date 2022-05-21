@@ -1,9 +1,10 @@
 from email import contentmanager
 from sre_constants import CATEGORY_UNI_DIGIT
+from unicodedata import category
 from flask import Flask, render_template, redirect, url_for, request
 from flask_bootstrap import Bootstrap
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, BooleanField
+from wtforms import StringField, PasswordField, BooleanField, RadioField, TextAreaField
 from wtforms.validators import InputRequired, Email, Length
 from flask_sqlalchemy import SQLAlchemy
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -55,20 +56,28 @@ class Comment(db.Model):
 @login_manager.user_loader
 def load_user(user_id):
   return User.query.get(int(user_id))
+
+
+# Wtf Forms classes 
 class LoginForm(FlaskForm):
   username = StringField('Username', validators=[InputRequired(), Length(min=4, max=15)])
   password = PasswordField('Password', validators=[InputRequired(), Length(min=8, max=80)])
   remember = BooleanField('Remember me')
 
 # You pass this class to the form in the template
-
-
 class RegisterForm(FlaskForm):
   username = StringField('Username', validators=[InputRequired(), Length(min=4, max=15)])
   email = StringField('Email', validators=[InputRequired(), Email(message="Invalid email"), Length(max=50)])
   password = PasswordField('Password', validators=[InputRequired(), Length(min=8, max=80)])
   
 
+
+class NewPitch(FlaskForm):
+  category = RadioField('Category',tags=['product','elevator','interview','promotion','icebreakers','pickuplines'],validators=[InputRequired()])
+  pitch_content = TextAreaField(u'pitch goes here' validators=[InputRequired(), Length(max=200)])
+  
+  
+  
 @app.route('/')
 def index():
   return render_template('index.html')
@@ -107,8 +116,11 @@ def pitches():
     pitch_category = request.form['pitch-tag']
     pitch_content = request.form['pitch-content']
     
-    
-    
+  # create the new pitch 
+  # change the userid to come from current users id not hardcoded 
+  mypitch = Pitch(content=pitch_content, user_id='1', category_id=pitch_category)
+  db.session.add(mypitch)
+  db.session.commit()    
 
   return render_template('index.html')
 
