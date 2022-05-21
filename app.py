@@ -39,7 +39,7 @@ class Category(db.Model):
   pitches = db.relationship('Pitch', backref="category")
 class Pitch (db.Model):
   pitch_id = db.Column(db.Integer, primary_key=True)
-  publish_date = db.Column(db.)
+  publish_date = db.Column(db.DateTime)
   comments= db.relationship('Comment', backref="pitch")
   user_id = db.Column(db.Integer, db.ForeignKey('user.id'))  
   category_id = db.Column(db.Integer, db.ForeignKey('category.id'))
@@ -47,7 +47,7 @@ class Pitch (db.Model):
 class Comment(db.Model):
   comment_id = db.Column(db.Integer, primary_key=True)
   content = db.Column(db.String(144))
-  publish_date
+  publish_date = db.Column(db.DateTime)
   pitch_id = db.Column(db.Integer, db.ForeignKey('pitch.pitch_id'))
   user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
 
