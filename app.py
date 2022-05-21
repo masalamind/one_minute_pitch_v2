@@ -40,10 +40,10 @@ class Category(db.Model):
 class Pitch (db.Model):
   pitch_id = db.Column(db.Integer, primary_key=True)
   publish_date = db.Column(db.DateTime)
-  comments= db.relationship('Comment', backref="pitch")
+  content = db.Column(db.Text)
   user_id = db.Column(db.Integer, db.ForeignKey('user.id'))  
   category_id = db.Column(db.Integer, db.ForeignKey('category.id'))
-  
+  comments= db.relationship('Comment', backref="pitch")
 class Comment(db.Model):
   comment_id = db.Column(db.Integer, primary_key=True)
   content = db.Column(db.String(144))
